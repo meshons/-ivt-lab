@@ -33,6 +33,12 @@ public class GT4500Test {
 
     // Assert
     assertEquals(true, result);
+
+    verifyNoInteractions(secondaryTorpedoStore);
+    verify(primaryTorpedoStore, never()).getTorpedoCount();
+    verify(primaryTorpedoStore, times(1)).isEmpty();
+    verify(primaryTorpedoStore, times(1)).fire(1);
+    verify(primaryTorpedoStore).fire(1);
   }
 
   @Test
@@ -40,6 +46,7 @@ public class GT4500Test {
     // Arrange
 
     when(primaryTorpedoStore.isEmpty()).thenReturn(false);
+    when(secondaryTorpedoStore.isEmpty()).thenReturn(false);
     when(primaryTorpedoStore.fire(1)).thenReturn(true);
     when(secondaryTorpedoStore.fire(1)).thenReturn(true);
 
@@ -48,6 +55,15 @@ public class GT4500Test {
 
     // Assert
     assertEquals(true, result);
+
+    verify(primaryTorpedoStore, never()).getTorpedoCount();
+    verify(primaryTorpedoStore, times(1)).isEmpty();
+    verify(primaryTorpedoStore, times(1)).fire(1);
+    verify(primaryTorpedoStore).fire(1);
+    verify(secondaryTorpedoStore, never()).getTorpedoCount();
+    verify(secondaryTorpedoStore, times(1)).isEmpty();
+    verify(secondaryTorpedoStore, times(1)).fire(1);
+    verify(secondaryTorpedoStore).fire(1);
   }
 
 }
